@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
+    "staff.apps.StaffConfig",
+    "timesheets.apps.TimesheetsConfig",
 ]
 
 MIDDLEWARE = [
@@ -158,6 +160,7 @@ SIMPLE_JWT = {
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # "rest_framework.authentication.SessionAuthentication"
     ]
 }
 

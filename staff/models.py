@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from timesheets.models import Project
 
 # Create your models here.
 STATUS = (
@@ -16,13 +17,18 @@ DISTRICT_REGIONS = (
 
 class Department(models.Model):
     name = models.CharField(max_length=50)
-    lead = models.OneToOneField(User, on_delete=models.SET_NULL)
+    lead = models.OneToOneField(
+        User, on_delete=models.SET_NULL, related_name="led_depts", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.SET_NULL
+        User, blank=True, on_delete=models.SET_NULL, related_name='created_depts', null=True
     )
     edited_at = models.DateField(auto_now=True)
-    status = models.CharField(max_length=200, choices=STATUS, null=True)
+    status = models.CharField(
+        max_length=200, choices=STATUS, null=True, default="ACTIVE")
+
+    def __str__(self):
+        return self.name
 
 
 class District(models.Model):
@@ -37,9 +43,12 @@ class District(models.Model):
     created_by = models.ForeignKey(
         User, blank=True, null=True, on_delete=models.SET_NULL
     )
-    edited_at = models.DateField(auto_now=True)
-    status = models.CharField(max_length=200, choices=STATUS, null=True)
-    optimization_district = models.BooleanField(default=False)
+    edited_at = models.DateField(auto_now=True, null=True)
+    status = models.CharField(
+        max_length=200, choices=STATUS, null=True, default="ACTIVE")
+
+    def __str__(self):
+        return self.name
 
 
 class Staff(models.Model):
@@ -47,29 +56,34 @@ class Staff(models.Model):
         MALE = 'male', 'Male'
         FEMALE = 'female', 'Female'
 
-    class Staff_Types(models.TextChoices):
+    class StaffTypes(models.TextChoices):
         DIRECTORS = 'Directors', 'Directors'
         MANAGERS = 'Managers', 'Managers'
         SUPPORT_STAFF = 'Support Staff', 'Support Staff'
         COURIERS = 'Couriers', 'Couriers'
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='staff_profile')
     position = models.CharField(max_length=200, null=False, blank=False)
     sex = models.CharField(choices=Gender, max_length=10,
                            null=False, blank=False)
-    line_manager = manager = models.ForeignKey(
-        'self', on_delete=models.SET_NULL, null=True, blank=True)
+    line_manager = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="managed_staff")
     department = models.ForeignKey(
         Department, on_delete=models.SET_NULL, null=True)
     district = models.ForeignKey(
-        District, on_delete=models.SET_NULL, null=True)
-    projects = models.ForeignKey(
-        District, on_delete=models.SET_NULL, null=True)
-    staff_type = models.CharField(choices=Staff_Types, max_length=50,
+        District, on_delete=models.SET_NULL, null=True, related_name="staff_district")
+    projects = models.ManyToManyField(
+        Project, related_name="staff_projects")
+    staff_type = models.CharField(choices=StaffTypes, max_length=50,
                                   null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.SET_NULL
+        User, blank=True, null=True, on_delete=models.SET_NULL, related_query_name='created_staff'
     )
     edited_at = models.DateField(auto_now=True)
-    status = models.CharField(max_length=200, choices=STATUS, null=True)
+    status = models.CharField(
+        max_length=200, choices=STATUS, null=True, default="ACTIVE")
+
+    def __str__(self):
+        return f'{self.user.first_name}_{self.user.last_name}'
