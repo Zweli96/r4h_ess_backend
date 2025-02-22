@@ -2,8 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Timesheet, STATUS
-from .serializers import TimesheetSerializer
+from .models import Timesheet, Period, STATUS
+from staff.models import Staff
+from .serializers import TimesheetSerializer, PeriodSerializer
 import datetime
 from staff.models import Staff
 from django.db.models import Q
@@ -21,14 +22,14 @@ class ApproveDetailApiView(APIView):
 
         staff = Staff.objects.get(user=user_id)
 
-        if staff.department.id == 2:
+        if staff.hr_approval:
             try:
                 return Timesheet.objects.get(id=timesheet_id)
             except Timesheet.DoesNotExist:
                 return None
 
         try:
-            return Timesheet.objects.get(id=timesheet_id, first_approver=user_id)
+            return Timesheet.objects.get(id=timesheet_id, line_manager=user_id)
         except Timesheet.DoesNotExist:
             return None
 
@@ -42,21 +43,22 @@ class ApproveDetailApiView(APIView):
         timesheet_instance = self.get_object(timesheet_id, request.user.id)
         if not timesheet_instance:
             return Response(
-                {"res": "Object with timesheet id does not exists"},
+                {"res": "Object with timesheet id does not exists or you do not have the rights"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         # initialize the data object
         data = {}
-        # if the current status is SUBMITTED, then set the first_approver and f
+        # if the current status is SUBMITTED, then set the first_approver, date and status
         if timesheet_instance.current_status == Timesheet.Current_Status.SUBMITTED:
-            if request.user.id == timesheet_instance.first_approver.id:
+            if request.user.id == timesheet_instance.line_manager.id:
                 data['first_approval_date'] = datetime.datetime.now()
+                data['first_approver'] = request.user.id
                 data['current_status'] = Timesheet.Current_Status.LINE_APPROVED
             else:
                 return Response(f'In order to complete a line manager approval user has to be line manager of the staff, for this timesheet the line manager is {timesheet_instance.created_by.email}', status=status.HTTP_400_BAD_REQUEST)
         elif timesheet_instance.current_status == Timesheet.Current_Status.LINE_APPROVED:
-            if staff.department.id == 2:
+            if staff.hr_approval:
                 data['second_approver'] = request.user.id
                 data['second_approval_date'] = datetime.datetime.now()
                 data['current_status'] = Timesheet.Current_Status.HR_APPROVED
@@ -79,21 +81,22 @@ class ApproveListApiView(APIView):
 
     # 1. List all
     def get(self, request, *args, **kwargs):
-        staff = Staff.objects.get(user_id=request.user.id)
-
         '''
         List all the timesheet items for given requested user
         '''
+        staff = Staff.objects.get(user_id=request.user.id)
 
-        if staff.department.id == 2:
-            timesheets = Timesheet.objects.filter(
-                Q(first_approver=request.user.id) &
-                Q(current_status=Timesheet.Current_Status.SUBMITTED)) | Timesheet.objects.filter(
-                current_status=Timesheet.Current_Status.LINE_APPROVED)
+        # User is first approver and status is submitted
+        timesheets = Timesheet.objects.filter(
+            line_manager=request.user,
+            current_status=Timesheet.Current_Status.SUBMITTED
+        )
 
-        else:
-            timesheets = Timesheet.objects.filter(
-                first_approver=request.user.id, current_status=Timesheet.Current_Status.SUBMITTED)
+        # If staff has hr_approval, also show line manager approved
+        if staff.hr_approval:
+            timesheets |= Timesheet.objects.filter(
+                current_status=Timesheet.Current_Status.LINE_APPROVED
+            )
 
         serializer = TimesheetSerializer(timesheets, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -218,3 +221,82 @@ class TimesheetDetailApiView(APIView):
             {"res": "Object deleted!"},
             status=status.HTTP_200_OK
         )
+
+
+class PeriodListApiView(APIView):
+    # add permission to check if user is authenticated
+    permission_classes = [permissions.IsAuthenticated]
+
+    # 1. List all
+    def get(self, request, *args, **kwargs):
+        '''
+        List all the periods items for given requested user
+        '''
+        periods = Period.objects.all()
+        serializer = PeriodSerializer(periods, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class EmployeePeriodListApiView(APIView):
+
+    # add permission to check if user is authenticated
+    permission_classes = [permissions.IsAuthenticated]
+
+    def generate_timesheet_json(self, period_id, staff_id):
+        try:
+            # Retrieve the period and staff objects
+            period = Period.objects.get(id=period_id)
+            staff = Staff.objects.get(id=staff_id)
+
+            # Generate the list of dates within the period
+            start_date = period.start_date
+            end_date = period.end_date
+            dates = [start_date + datetime.timedelta(days=x)
+                     for x in range((end_date - start_date).days + 1)]
+
+            # Retrieve the project names associated with the staff member
+            project_names = staff.projects.values_list('name', flat=True)
+
+            # Initialize the timesheet dictionary
+            timesheet = {}
+
+            # Loop through each date in the period and construct the timesheet entries
+            for i, date in enumerate(dates, start=1):
+                timesheet_entry = {
+                    'date': date.strftime('%Y-%m-%d'),
+                    'projects': {project: 0 for project in project_names},
+                    'leave': {
+                        'sick_leave': 0,
+                        'study_leave': 0,
+                        'maternity_paternity_leave': 0,
+                        'compassionate_leave': 0,
+                        'unpaid_leave': 0,
+                        'administrative_leave': 0,
+                        'public_leave': 0,
+                        'annual_leave': 0,
+                    },
+                }
+                timesheet[i] = timesheet_entry
+
+            return timesheet
+
+        except Period.DoesNotExist:
+            return JsonResponse({'error': 'Period not found'}, status=404)
+        except Staff.DoesNotExist:
+            return JsonResponse({'error': 'Staff not found'}, status=404)
+
+    # 1. List all
+    def get(self, request, period_id, *args, **kwargs):
+        '''
+        List all the periods items for given requested user
+        '''
+        timesheet = Timesheet.objects.filter(
+            period=period_id, created_by=request.user)
+
+        if timesheet.exists():
+            serializer = TimesheetSerializer(timesheet)
+        else:
+            serializer = self.generate_timesheet_json(
+                period_id, request.user.id)
+
+        return Response(serializer, status=status.HTTP_200_OK)

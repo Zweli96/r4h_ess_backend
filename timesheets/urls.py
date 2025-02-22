@@ -4,13 +4,18 @@ from .views import (
     TimesheetListApiView,
     TimesheetDetailApiView,
     ApproveListApiView,
-    ApproveDetailApiView
+    ApproveDetailApiView,
+    PeriodListApiView,
+    EmployeePeriodListApiView
 )
 
 urlpatterns = [
-    path('api', TimesheetListApiView.as_view()),
-    path('api/<int:timesheet_id>/', TimesheetDetailApiView.as_view()),
-    path('api/approvals', ApproveListApiView.as_view()),
-    path('api/approvals/<int:timesheet_id>/',
+    path('', TimesheetListApiView.as_view()),
+    path('<int:timesheet_id>/', TimesheetDetailApiView.as_view()),
+    path('approvals', ApproveListApiView.as_view()),
+    path('approvals/<int:timesheet_id>',
          ApproveDetailApiView.as_view()),
+    path('periods', PeriodListApiView.as_view()),
+    path('periods/employee/<int:period_id>',
+         EmployeePeriodListApiView.as_view()),
 ]

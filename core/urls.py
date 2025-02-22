@@ -21,7 +21,7 @@ from timesheets import urls as timesheet_urls
 urlpatterns = [
     path('api/auth/', include('authentication.urls')),
     path("admin/", admin.site.urls),
-    path('timesheets/', include(timesheet_urls)),
+    path('api/timesheets/', include(timesheet_urls)),
     re_path(r"^api-auth/", include("rest_framework.urls",
             namespace="rest_framework"))
 ]

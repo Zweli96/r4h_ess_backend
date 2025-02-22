@@ -17,7 +17,7 @@ DISTRICT_REGIONS = (
 
 class Department(models.Model):
     name = models.CharField(max_length=50)
-    lead = models.OneToOneField(
+    lead = models.ForeignKey(
         User, on_delete=models.SET_NULL, related_name="led_depts", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
@@ -63,27 +63,29 @@ class Staff(models.Model):
         COURIERS = 'Couriers', 'Couriers'
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='staff_profile')
+        User, on_delete=models.CASCADE, related_name='staff_profile', null=False)
     position = models.CharField(max_length=200, null=False, blank=False)
     sex = models.CharField(choices=Gender, max_length=10,
-                           null=False, blank=False)
+                           null=True, blank=True)
     line_manager = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name="managed_staff")
     department = models.ForeignKey(
-        Department, on_delete=models.SET_NULL, null=True)
+        Department, on_delete=models.SET_NULL, null=True, blank=True)
     district = models.ForeignKey(
-        District, on_delete=models.SET_NULL, null=True, related_name="staff_district")
+        District, on_delete=models.SET_NULL, null=True, blank=True, related_name="staff_district")
     projects = models.ManyToManyField(
-        Project, related_name="staff_projects")
+        Project, related_name="staff_projects", blank=True)
     staff_type = models.CharField(choices=StaffTypes, max_length=50,
-                                  null=False, blank=False)
+                                  null=True, blank=True),
+    hr_approval = models.BooleanField(default=False)
+    employee_number = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(
         User, blank=True, null=True, on_delete=models.SET_NULL, related_query_name='created_staff'
     )
-    edited_at = models.DateField(auto_now=True)
+    edited_at = models.DateTimeField(auto_now=True)
     status = models.CharField(
-        max_length=200, choices=STATUS, null=True, default="ACTIVE")
+        max_length=200, choices=STATUS,  null=True, blank=True, default="ACTIVE")
 
     def __str__(self):
-        return f'{self.user.first_name}_{self.user.last_name}'
+        return f'{self.user.first_name}_{self.user.last_name}_{self.district}'
