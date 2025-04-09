@@ -1,0 +1,49 @@
+FROM python:3.12-alpine
+
+# Set environment variables
+ENV PYTHONUNBUFFERED 1
+ENV VIRTUAL_ENV /env
+ENV PATH /env/bin:$PATH
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies
+ADD ./requirements.txt /app/requirements.txt
+
+RUN set -ex \
+    && apk add --no-cache \
+        libffi-dev \
+        cargo rust \
+        openssl-dev \
+        musl-dev \
+    && apk add --no-cache --virtual .build-deps \
+        postgresql-dev build-base \
+    && python -m venv /env \
+    && /env/bin/pip install --upgrade pip \
+    && /env/bin/pip install --no-cache-dir -r /app/requirements.txt \
+    && runDeps="$(scanelf --needed --nobanner --recursive /env \
+        | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+        | sort -u \
+        | xargs -r apk info --installed \
+        | sort -u)" \
+    && apk add --virtual rundeps $runDeps \
+    && apk del .build-deps
+
+# Copy project files AFTER installing dependencies
+ADD . /app
+
+# Set STATIC_ROOT directory
+RUN mkdir -p /app/staticfiles
+
+# Collect static files
+RUN /env/bin/python manage.py collectstatic --noinput
+
+# Ensure correct permissions
+RUN chmod -R 777 /app/staticfiles
+
+# Expose port
+EXPOSE 8000
+
+# Start Gunicorn server
+CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "core.wsgi:application"]
