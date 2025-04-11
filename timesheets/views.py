@@ -2,18 +2,21 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Timesheet, Period, STATUS
+from django.http import JsonResponse
+from rest_framework.permissions import AllowAny
+from .models import Timesheet, Period, STATUS,Activity
 from staff.models import Staff
-from .serializers import TimesheetSerializer, PeriodSerializer
+from .serializers import TimesheetSerializer, PeriodSerializer,ActivitySerializer,TimesheetReportSerializer
 import datetime
 from staff.models import Staff
 from django.db.models import Q
 from django.contrib.auth.models import User
-
+from decimal import Decimal
 
 class ApproveDetailApiView(APIView):
     # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_object(self, timesheet_id, user_id):
         '''
@@ -104,7 +107,8 @@ class ApproveListApiView(APIView):
 
 class TimesheetListApiView(APIView):
     # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [AllowAny]
 
     # 1. List all
     def get(self, request, *args, **kwargs):
@@ -112,16 +116,49 @@ class TimesheetListApiView(APIView):
         List all the timesheet items for given requested user
         '''
         timesheets = Timesheet.objects.filter(created_by=request.user.id)
+        
         serializer = TimesheetSerializer(timesheets, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 2. Create
-    def post(self, request, *args, **kwargs):
-        '''
-        Create the Timesheet with given timesheet data
-        '''
-        staff = Staff.objects.get(user_id=request.user.id)
+#     def post(self, request, *args, **kwargs):
+#         '''
+#         Create the Timesheet with given timesheet data
+#         '''
+#         staff = Staff.objects.get(user_id=request.user.id)
 
+#         data = {
+#             'period': request.data.get('period'),
+#             'projects': request.data.get('completed'),
+#             'total_hours': request.data.get('total_hours'),
+#             'leave_days': request.data.get('leave_days'),
+#             'working_days': request.data.get('working_days'),
+#             'filled_timesheet': request.data.get('filled_timesheet'),
+#             'first_approver': staff.line_manager.id,
+#             'created_at': datetime.datetime.now(),
+#             'current_status': Timesheet.Current_Status.SUBMITTED,
+#             'created_by': request.user.id,
+#             'status': STATUS[0][0],
+
+#         }
+#         serializer = TimesheetSerializer(data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# #adding timesheet to the database
+
+    def post(self, request, *args, **kwargs):  
+        user = request.data.get('created_by')
+        period = request.data.get('period')
+       
+       #checking if there is user with same key and period
+        existing_timesheet = Timesheet.objects.filter(period=period, created_by=user).first()
+        line_manager = Staff.objects.get(user__id=request.data.get("created_by")).line_manager.pk
         data = {
             'period': request.data.get('period'),
             'projects': request.data.get('completed'),
@@ -129,20 +166,22 @@ class TimesheetListApiView(APIView):
             'leave_days': request.data.get('leave_days'),
             'working_days': request.data.get('working_days'),
             'filled_timesheet': request.data.get('filled_timesheet'),
-            'first_approver': staff.line_manager.id,
             'created_at': datetime.datetime.now(),
             'current_status': Timesheet.Current_Status.SUBMITTED,
-            'created_by': request.user.id,
+            'created_by': user,
             'status': STATUS[0][0],
+            'line_manager':line_manager
+            }
 
-        }
-        serializer = TimesheetSerializer(data=data)
+        if existing_timesheet:
+            serializer = TimesheetSerializer(existing_timesheet, data=data, partial=True)
+        else:
+            serializer = TimesheetSerializer(data=data)
+
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+            return Response(serializer.data, status=status.HTTP_201_CREATED if not existing_timesheet else status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class TimesheetDetailApiView(APIView):
     # add permission to check if user is authenticated
@@ -300,3 +339,107 @@ class EmployeePeriodListApiView(APIView):
                 period_id, request.user.id)
 
         return Response(serializer, status=status.HTTP_200_OK)
+
+
+
+class ActivityListApiView(APIView):
+    def get(self, request):
+        activities = Activity.objects.all()
+        serializer = ActivitySerializer(activities, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ActivitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#activity api class
+class ActivityDetailApiView(APIView):
+    def get_object(self, activity_id):
+        try:
+            return Activity.objects.get(id=activity_id)
+        except Activity.DoesNotExist:
+            return None
+
+    def get(self, request, activity_id):
+        activity_instance = self.get_object(activity_id)
+        if not activity_instance:
+            return Response({"res": "Object with activity id does not exists"}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ActivitySerializer(activity_instance)
+        return Response(serializer.data)
+
+    def put(self, request, activity_id):
+        activity_instance = self.get_object(activity_id)
+        if not activity_instance:
+            return Response({"res": "Object with activity id does not exists"}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ActivitySerializer(instance=activity_instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, activity_id):
+        activity_instance = self.get_object(activity_id)
+        if not activity_instance:
+            return Response({"res": "Object with activity id does not exists"}, status=status.HTTP_400_BAD_REQUEST)
+        activity_instance.delete()
+        return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)
+
+
+
+#report api class
+
+class TimesheetReportView(APIView):
+    def get(self, request):
+        timesheets = Timesheet.objects.filter(current_status=Timesheet.Current_Status.HR_APPROVED)
+        report_data = []
+
+        for timesheet in timesheets:
+            if timesheet.filled_timesheet is not None and isinstance(timesheet.filled_timesheet, dict):
+                userid = timesheet.created_by_id
+                staffdetails = Staff.objects.get(id=userid)
+                employeeid = staffdetails.employee_number
+                district = staffdetails.district
+                period = timesheet.period
+                namedetails = User.objects.get(id=userid)
+                fullname = namedetails.first_name + " " + namedetails.last_name
+
+                projects = {}
+                total_project_hours = 0
+
+                for day, data in timesheet.filled_timesheet.items():
+                    if isinstance(data, dict):
+                        for project, hours in data.get('projects', {}).items():
+                            if project not in projects:
+                                projects[project] = 0
+                            if hours:
+                                projects[project] += float(hours)
+                                total_project_hours += float(hours)
+
+                total_hours = timesheet.total_hours
+                total_leave_hours = total_hours - Decimal(total_project_hours)
+                total_available_hours = 160  
+                loe = ((Decimal(total_project_hours) / Decimal(total_hours)) * 100).quantize(Decimal('0.01'))
+
+                report_entry = {
+                    'employee_id': employeeid,
+                    'staff_name': fullname,
+                    'district': district,
+                    'project': projects,
+                    'total_hours': total_hours, 
+                    'total_work_hours': total_project_hours,
+                    'total_leave_hours': total_leave_hours,
+                    'total_available_hours': total_hours,
+                    'LOE': loe,
+                    "period": period
+                }
+
+                report_data.append(report_entry)
+
+        serializer = TimesheetReportSerializer(report_data, many=True)
+        return Response(serializer.data)

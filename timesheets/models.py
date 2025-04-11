@@ -68,15 +68,15 @@ class Period(models.Model):
         super().save(*args, **kwargs)
 
 
-class Project(models.Model):
-    name = models.CharField(max_length=50)
-    created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.SET_NULL
-    )
-    edited_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(
-        max_length=200, choices=STATUS, null=True, default="ACTIVE")
+# class Project(models.Model):
+#     name = models.CharField(max_length=50)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     created_by = models.ForeignKey(
+#         User, blank=True, null=True, on_delete=models.SET_NULL
+#     )
+#     edited_at = models.DateTimeField(auto_now=True)
+#     status = models.CharField(
+#         max_length=200, choices=STATUS, null=True, default="ACTIVE")
 
     def __str__(self):
         return self.name
@@ -89,8 +89,12 @@ class Timesheet(models.Model):
         HR_APPROVED = "HR Approved", "HR Approved"
         REJECTED = "Central Region", "Central Region"
 
-    period = models.ForeignKey(
-        Period, on_delete=models.SET_NULL, null=True)
+    # period = models.ForeignKey(
+    #     Period, on_delete=models.SET_NULL, null=True)
+    
+    period = models.CharField(max_length=255, null=True)
+    current_status = models.CharField(choices=Current_Status.choices, max_length=50,
+                                      null=False, blank=False)
     current_status = models.CharField(choices=Current_Status, max_length=50,
                                       null=False, blank=False)
     line_manager = models.ForeignKey(
@@ -119,3 +123,25 @@ class Timesheet(models.Model):
 
     def __str__(self):
         return f'{self.period.name}_{self.created_by.first_name}_{self.created_by.last_name}'
+
+
+ #activity model  
+class Activity(models.Model):
+    TYPE_CHOICES = (
+        ('PROJECT', 'Project'),
+        ('LEAVE', 'Leave'),
+    )
+
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    status = models.CharField(
+        max_length=200, choices=STATUS, null=True, default="ACTIVE")
+    is_loe = models.BooleanField(default=False) 
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_activities')
+    modified_at = models.DateTimeField(auto_now=True)
+    modified_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='modified_activities', null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Activity'
+        verbose_name_plural = 'Activities'
