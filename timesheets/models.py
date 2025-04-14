@@ -87,7 +87,7 @@ class Timesheet(models.Model):
         SUBMITTED = "Submitted", "Submitted"
         LINE_APPROVED = "Line Manager Approved", "Line Manager Approved"
         HR_APPROVED = "HR Approved", "HR Approved"
-        REJECTED = "Central Region", "Central Region"
+        REJECTED = "Rejected", "Rejected"
 
     period = models.ForeignKey(
         Period, on_delete=models.SET_NULL, null=True)

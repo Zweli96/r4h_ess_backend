@@ -34,7 +34,7 @@ class ApproveDetailApiView(APIView):
             return None
 
     # Approve the timesheet
-    def put(self, request, timesheet_id, *args, **kwargs):
+    def put(self, request, timesheet_id, action=None, *args, **kwargs):
         '''
         Do the timesheet approvals this can be first approval or second approval
         '''
@@ -49,23 +49,53 @@ class ApproveDetailApiView(APIView):
 
         # initialize the data object
         data = {}
-        # if the current status is SUBMITTED, then set the first_approver, date and status
-        if timesheet_instance.current_status == Timesheet.Current_Status.SUBMITTED:
-            if request.user.id == timesheet_instance.line_manager.id:
-                data['first_approval_date'] = datetime.datetime.now()
-                data['first_approver'] = request.user.id
-                data['current_status'] = Timesheet.Current_Status.LINE_APPROVED
+        if action == 'approve':
+            # if the current status is SUBMITTED, then set the first_approver, date and status
+            if timesheet_instance.current_status == Timesheet.Current_Status.SUBMITTED:
+                if request.user.id == timesheet_instance.line_manager.id:
+                    data['first_approval_date'] = datetime.datetime.now()
+                    data['first_approver'] = request.user.id
+                    data['current_status'] = Timesheet.Current_Status.LINE_APPROVED
+                else:
+                    return Response(f'In order to complete a line manager approval user has to be line manager of the staff, for this timesheet the line manager is {timesheet_instance.created_by.email}', status=status.HTTP_400_BAD_REQUEST)
+            elif timesheet_instance.current_status == Timesheet.Current_Status.LINE_APPROVED:
+                if staff.hr_approval:
+                    data['second_approver'] = request.user.id
+                    data['second_approval_date'] = datetime.datetime.now()
+                    data['current_status'] = Timesheet.Current_Status.HR_APPROVED
+                else:
+                    return Response(f'In order to complete an HR approval user has to be in HR Dept current user departnment is {staff.department.name}', status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response(f'In order to complete a line manager approval user has to be line manager of the staff, for this timesheet the line manager is {timesheet_instance.created_by.email}', status=status.HTTP_400_BAD_REQUEST)
-        elif timesheet_instance.current_status == Timesheet.Current_Status.LINE_APPROVED:
-            if staff.hr_approval:
-                data['second_approver'] = request.user.id
-                data['second_approval_date'] = datetime.datetime.now()
-                data['current_status'] = Timesheet.Current_Status.HR_APPROVED
+                return Response(f'Cannot approve a timesheet that has the current status {timesheet_instance.current_status}. Current status has to be submitted or line approved', status=status.HTTP_400_BAD_REQUEST)
+
+        elif action == 'reject':
+            # Rejection logic
+            if timesheet_instance.current_status in [Timesheet.Current_Status.SUBMITTED, Timesheet.Current_Status.LINE_APPROVED]:
+                # Check if rejection reason is provided in the request data
+                rejection_reason = request.data.get("rejection_reason")
+                if not rejection_reason:
+                    return Response(
+                        {"res": "Rejection reason is required"},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                # Update timesheet with rejection details
+                data["current_status"] = Timesheet.Current_Status.REJECTED
+                data["comment"] = rejection_reason
+                # Optional: track who rejected it
+                data["rejected_by"] = request.user.id
+                # Optional: track when it was rejected
+                data["rejected_date"] = datetime.datetime.now()
             else:
-                return Response(f'In order to complete an HR approval user has to be in HR Dept current user departnment is {staff.department.name}', status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    f"Cannot reject a timesheet with status {timesheet_instance.current_status}. It must be SUBMITTED or LINE_APPROVED",
+                    status=status.HTTP_400_BAD_REQUEST
+                )
         else:
-            return Response(f'Cannot approve a timesheet that has the current status {timesheet_instance.current_status}. Current status has to be submitted or line approved', status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"res": "Invalid action specified"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         serializer = TimesheetSerializer(
             instance=timesheet_instance, data=data, partial=True)
