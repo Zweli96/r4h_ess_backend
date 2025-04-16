@@ -1,0 +1,68 @@
+<!-- templates/emails/timesheet_notification.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .header {
+        background: #f4f4f4;
+        padding: 10px;
+        text-align: center;
+      }
+      .content {
+        padding: 20px;
+      }
+      .footer {
+        font-size: 12px;
+        color: #777;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>New Timesheet Submission</h2>
+      </div>
+      <div class="content">
+        <p>Dear {{ line_manager_name }},</p>
+        <p>
+          A new timesheet has been submitted by {{ staff_name }} and is awaiting
+          your Approval
+        </p>
+        <h3>Timesheet Details:</h3>
+        <ul>
+          <li><strong>Name:</strong> {{ staff_name }}</li>
+          <li><strong>Submission Date:</strong> {{ submission_date }}</li>
+          <li><strong>Period:</strong> {{ period }}</li>
+          <li><strong>Hours Worked:</strong> {{ hours_worked }}</li>
+          <li><strong>Leave Days:</strong> {{ leave_days }}</li>
+        </ul>
+        <p>Please review the timesheet at your earliest convenience.</p>
+        <a
+          href="{{ review_url }}"
+          style="
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+          "
+          >Review Timesheet</a
+        >
+      </div>
+      <div class="footer">
+        <p>This is an automated message from R4H ESS System.</p>
+      </div>
+    </div>
+  </body>
+</html>

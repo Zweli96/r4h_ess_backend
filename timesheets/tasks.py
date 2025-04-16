@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from .models import Period, Timesheet
 from datetime import datetime, timedelta
 from staff.models import Staff
+from django.template.loader import render_to_string
+from django.conf import settings
 
 
 # Function to send email to remind users to submit their timesheets
@@ -39,5 +41,50 @@ def send_timesheet_reminder_email():
                       [user.email],
                       fail_silently=False)
         return f"emails sent to {len(users)} users"
+    except Exception as e:
+        print(e)
+
+
+timesheet_data = {
+    'submission_date': '2023-10-01',
+    'period': 'October 2023',
+    'hours_worked': 160,
+    'leave_days': 2
+}
+
+
+@shared_task
+def send_timesheet_approval_notification(line_manager_email="zgolowa@r4hmw.org", line_manager_name="Zwelithini Golowa", staff_name="Richard Nyali", timesheet_data=timesheet_data):
+    try:
+        print(
+            f"Processing approval notification email for {staff_name} - {timesheet_data['period']}...")
+        subject = f"Timesheet Submission by {staff_name} awaiting review"
+        # Adjust URL as needed
+        review_url = f"{settings.SYSTEM_URL}/approvals"
+
+        # Context for the email template
+        context = {
+            'line_manager_name': line_manager_name,
+            'staff_name': staff_name,
+            'submission_date': timesheet_data['submission_date'],
+            'period': timesheet_data['period'],
+            'hours_worked': timesheet_data['hours_worked'],
+            'leave_days': timesheet_data['leave_days'],
+            'review_url': review_url,
+        }
+
+        # Render the HTML template
+        html_message = render_to_string(
+            'timesheet_approval_notification_email.html', context)
+
+        # Send the email
+        send_mail(
+            subject=subject,
+            message="A new timesheet has been submitted.",  # Plain text fallback
+            from_email=f"R4H TIMESHEETS <{settings.DEFAULT_FROM_EMAIL}>",
+            recipient_list=[line_manager_email],
+            html_message=html_message,
+            fail_silently=False,
+        )
     except Exception as e:
         print(e)

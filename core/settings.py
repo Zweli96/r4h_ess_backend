@@ -178,6 +178,7 @@ REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,
     'REGISTER_SERIALIZER': 'authentication.serializers.RegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'staff.serializers.CustomUserSerializer',
 }
 
 if DEBUG:
@@ -213,7 +214,7 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 
-SYSTEM_URL = "http://98.97.162.222:8000"
+SYSTEM_URL = env("SYSTEM_URL")
 
 # Logging Configuration
 

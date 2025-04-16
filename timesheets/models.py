@@ -91,7 +91,7 @@ class Timesheet(models.Model):
 
     # period = models.ForeignKey(
     #     Period, on_delete=models.SET_NULL, null=True)
-    
+
     period = models.CharField(max_length=255, null=True)
     current_status = models.CharField(choices=Current_Status.choices, max_length=50,
                                       null=False, blank=False)
@@ -122,10 +122,11 @@ class Timesheet(models.Model):
         max_length=200, choices=STATUS, null=True, default="ACTIVE")
 
     def __str__(self):
-        return f'{self.period.name}_{self.created_by.first_name}_{self.created_by.last_name}'
+        return f'{self.period}_{self.created_by.first_name}_{self.created_by.last_name}'
+
+ # activity model
 
 
- #activity model  
 class Activity(models.Model):
     TYPE_CHOICES = (
         ('PROJECT', 'Project'),
@@ -136,11 +137,13 @@ class Activity(models.Model):
     type = models.CharField(max_length=10, choices=TYPE_CHOICES)
     status = models.CharField(
         max_length=200, choices=STATUS, null=True, default="ACTIVE")
-    is_loe = models.BooleanField(default=False) 
+    is_loe = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_activities')
+    created_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='created_activities')
     modified_at = models.DateTimeField(auto_now=True)
-    modified_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='modified_activities', null=True, blank=True)
+    modified_by = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='modified_activities', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Activity'
