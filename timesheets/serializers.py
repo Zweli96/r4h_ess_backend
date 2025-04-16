@@ -58,6 +58,7 @@ class ActivityListApiView(APIView):
 class TimesheetReportSerializer(serializers.Serializer):
     employee_id = serializers.CharField()
     staff_name = serializers.CharField()
+    department = serializers.CharField()
     district = serializers.CharField()
     period = serializers.CharField()
     project = serializers.DictField()

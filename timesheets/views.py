@@ -408,6 +408,7 @@ class TimesheetReportView(APIView):
                 period = timesheet.period
                 namedetails = User.objects.get(id=userid)
                 fullname = namedetails.first_name + " " + namedetails.last_name
+                department =  staffdetails.department
 
                 projects = {}
                 total_project_hours = 0
@@ -423,7 +424,7 @@ class TimesheetReportView(APIView):
 
                 total_hours = timesheet.total_hours
                 total_leave_hours = total_hours - Decimal(total_project_hours)
-                total_available_hours = 160  
+                 
                 loe = ((Decimal(total_project_hours) / Decimal(total_hours)) * 100).quantize(Decimal('0.01'))
 
                 report_entry = {
@@ -436,7 +437,8 @@ class TimesheetReportView(APIView):
                     'total_leave_hours': total_leave_hours,
                     'total_available_hours': total_hours,
                     'LOE': loe,
-                    "period": period
+                    "period": period,
+                    "department":department
                 }
 
                 report_data.append(report_entry)
