@@ -6,7 +6,7 @@ from .views import (
     ApproveListApiView,
     ApproveDetailApiView,
     PeriodListApiView,
-    EmployeePeriodListApiView,ActivityListApiView,ActivityDetailApiView,TimesheetReportView
+    EmployeePeriodListApiView,ActivityListApiView,ActivityDetailApiView,TimesheetReportView,DistrictView
 )
 
 urlpatterns = [
@@ -21,4 +21,5 @@ urlpatterns = [
      path('activities/', ActivityListApiView.as_view()),
     path('activities/<int:activity_id>/', ActivityDetailApiView.as_view()),
     path('timesheetReport/', TimesheetReportView.as_view()),
+     path('districts/', DistrictView.as_view(), name='districts'),
 ]
