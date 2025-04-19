@@ -6,12 +6,13 @@ from django.http import JsonResponse
 from rest_framework.permissions import AllowAny
 from .models import Timesheet, Period, STATUS, Activity
 from staff.models import Staff
-from .serializers import TimesheetSerializer, PeriodSerializer, ActivitySerializer, TimesheetReportSerializer
+from .serializers import TimesheetSerializer, PeriodSerializer, ActivitySerializer, TimesheetReportSerializer, DistrictSerializer
 import datetime
-from staff.models import Staff
+from staff.models import Staff, District
 from django.db.models import Q
 from django.contrib.auth.models import User
 from decimal import Decimal
+from rest_framework import generics
 
 
 class ApproveDetailApiView(APIView):
@@ -181,7 +182,6 @@ class TimesheetListApiView(APIView):
 
 
 # #adding timesheet to the database
-
 
     def post(self, request, *args, **kwargs):
         user = request.data.get('created_by')
@@ -424,14 +424,17 @@ class ActivityDetailApiView(APIView):
         return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)
 
 
-# report api class
+# api class for getting all districts
+class DistrictView(generics.ListAPIView):
+    queryset = District.objects.all()
+    serializer_class = DistrictSerializer
+
 
 class TimesheetReportView(APIView):
     def get(self, request):
         timesheets = Timesheet.objects.filter(
             current_status=Timesheet.Current_Status.HR_APPROVED)
         report_data = []
-
         for timesheet in timesheets:
             if timesheet.filled_timesheet is not None and isinstance(timesheet.filled_timesheet, dict):
                 userid = timesheet.created_by_id
@@ -441,7 +444,7 @@ class TimesheetReportView(APIView):
                 period = timesheet.period
                 namedetails = User.objects.get(id=userid)
                 fullname = namedetails.first_name + " " + namedetails.last_name
-
+                department = staffdetails.department
                 projects = {}
                 total_project_hours = 0
 
@@ -449,16 +452,21 @@ class TimesheetReportView(APIView):
                     if isinstance(data, dict):
                         for project, hours in data.get('projects', {}).items():
                             if project not in projects:
-                                projects[project] = 0
+                                projects[project] = {'hours': 0}
                             if hours:
-                                projects[project] += float(hours)
+                                projects[project]['hours'] += float(hours)
                                 total_project_hours += float(hours)
 
                 total_hours = timesheet.total_hours
                 total_leave_hours = total_hours - Decimal(total_project_hours)
-                total_available_hours = 160
+
                 loe = ((Decimal(total_project_hours) / Decimal(total_hours))
                        * 100).quantize(Decimal('0.01'))
+
+                for project, project_data in projects.items():
+                    project_loe = ((Decimal(
+                        project_data['hours']) / Decimal(total_hours)) * 100).quantize(Decimal('0.01'))
+                    projects[project]['loe'] = project_loe
 
                 report_entry = {
                     'employee_id': employeeid,
@@ -470,10 +478,9 @@ class TimesheetReportView(APIView):
                     'total_leave_hours': total_leave_hours,
                     'total_available_hours': total_hours,
                     'LOE': loe,
-                    "period": period
+                    "period": period,
+                    "department": department
                 }
-
                 report_data.append(report_entry)
-
         serializer = TimesheetReportSerializer(report_data, many=True)
         return Response(serializer.data)

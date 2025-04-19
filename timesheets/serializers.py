@@ -1,7 +1,7 @@
 # todo/todo_api/serializers.py
 # from rest_framework import serializers
 # from .models import Timesheet, Period
-from staff.models import Staff
+from staff.models import Staff, District
 
 
 from rest_framework import views, serializers, response
@@ -79,9 +79,16 @@ class ActivityListApiView(APIView):
         return response.Response(serializer.data)
 
 
+class DistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = District
+        fields = ['id', 'name']
+
+
 class TimesheetReportSerializer(serializers.Serializer):
     employee_id = serializers.CharField()
     staff_name = serializers.CharField()
+    department = serializers.CharField()
     district = serializers.CharField()
     period = serializers.CharField()
     project = serializers.DictField()
