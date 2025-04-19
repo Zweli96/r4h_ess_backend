@@ -1,4 +1,3 @@
-<!-- templates/emails/timesheet_notification.html -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -31,24 +30,17 @@
   <body>
     <div class="container">
       <div class="header">
-        <h2>New Timesheet Submission</h2>
+        <h2>Timesheet Due Reminder</h2>
       </div>
       <div class="content">
-        <p>Dear {{ manager_name }},</p>
+        <p>Hello {{ staff_name }},</p>
         <p>
-          A new timesheet has been {{action}} by {{ employee_name }} and is
-          awaiting your Approval
+          The timesheet for {{ period }} is due today, 16th of this current
+          month.
         </p>
-        <h3>Timesheet Details:</h3>
-        <ul>
-          <li><strong>Name:</strong> {{ submission_date }}</li>
-          <li><strong>Period:</strong> {{ submission_date }}</li>
-          <li><strong>Hours Worked:</strong> {{ hours_worked }}</li>
-          <li><strong>Leave Days:</strong> {{ project_name }}</li>
-        </ul>
-        <p>Please review the timesheet at your earliest convenience.</p>
+        <p>Please login to submit your timesheet.</p>
         <a
-          href="{{ review_url }}"
+          href="{{ submit_url }}"
           style="
             display: inline-block;
             padding: 10px 20px;
@@ -56,7 +48,7 @@
             color: #fff;
             text-decoration: none;
           "
-          >Review Timesheet</a
+          >Submit Timesheet</a
         >
       </div>
       <div class="footer">

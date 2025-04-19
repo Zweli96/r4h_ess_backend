@@ -4,14 +4,15 @@ from rest_framework import status
 from rest_framework import permissions
 from django.http import JsonResponse
 from rest_framework.permissions import AllowAny
-from .models import Timesheet, Period, STATUS,Activity
+from .models import Timesheet, Period, STATUS, Activity
 from staff.models import Staff
-from .serializers import TimesheetSerializer, PeriodSerializer,ActivitySerializer,TimesheetReportSerializer
+from .serializers import TimesheetSerializer, PeriodSerializer, ActivitySerializer, TimesheetReportSerializer
 import datetime
 from staff.models import Staff
 from django.db.models import Q
 from django.contrib.auth.models import User
 from decimal import Decimal
+
 
 class ApproveDetailApiView(APIView):
     # add permission to check if user is authenticated
@@ -146,7 +147,7 @@ class TimesheetListApiView(APIView):
         List all the timesheet items for given requested user
         '''
         timesheets = Timesheet.objects.filter(created_by=request.user.id)
-        
+
         serializer = TimesheetSerializer(timesheets, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -179,16 +180,18 @@ class TimesheetListApiView(APIView):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 # #adding timesheet to the database
 
-    def post(self, request, *args, **kwargs):  
+
+    def post(self, request, *args, **kwargs):
         user = request.data.get('created_by')
         period = request.data.get('period')
-       
-       #checking if there is user with same key and period
-        existing_timesheet = Timesheet.objects.filter(period=period, created_by=user).first()
-        line_manager = Staff.objects.get(user__id=request.data.get("created_by")).line_manager.pk
+
+       # checking if there is user with same key and period
+        existing_timesheet = Timesheet.objects.filter(
+            period=period, created_by=user).first()
+        line_manager = Staff.objects.get(
+            user__id=request.data.get("created_by")).line_manager.pk
         data = {
             'period': request.data.get('period'),
             'projects': request.data.get('completed'),
@@ -200,11 +203,12 @@ class TimesheetListApiView(APIView):
             'current_status': Timesheet.Current_Status.SUBMITTED,
             'created_by': user,
             'status': STATUS[0][0],
-            'line_manager':line_manager
-            }
+            'line_manager': line_manager
+        }
 
         if existing_timesheet:
-            serializer = TimesheetSerializer(existing_timesheet, data=data, partial=True)
+            serializer = TimesheetSerializer(
+                existing_timesheet, data=data, partial=True)
         else:
             serializer = TimesheetSerializer(data=data)
 
@@ -212,6 +216,7 @@ class TimesheetListApiView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED if not existing_timesheet else status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TimesheetDetailApiView(APIView):
     # add permission to check if user is authenticated
@@ -371,7 +376,6 @@ class EmployeePeriodListApiView(APIView):
         return Response(serializer, status=status.HTTP_200_OK)
 
 
-
 class ActivityListApiView(APIView):
     def get(self, request):
         activities = Activity.objects.all()
@@ -386,9 +390,7 @@ class ActivityListApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-#activity api class
+# activity api class
 class ActivityDetailApiView(APIView):
     def get_object(self, activity_id):
         try:
@@ -407,7 +409,8 @@ class ActivityDetailApiView(APIView):
         activity_instance = self.get_object(activity_id)
         if not activity_instance:
             return Response({"res": "Object with activity id does not exists"}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = ActivitySerializer(instance=activity_instance, data=request.data, partial=True)
+        serializer = ActivitySerializer(
+            instance=activity_instance, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -421,12 +424,12 @@ class ActivityDetailApiView(APIView):
         return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)
 
 
-
-#report api class
+# report api class
 
 class TimesheetReportView(APIView):
     def get(self, request):
-        timesheets = Timesheet.objects.filter(current_status=Timesheet.Current_Status.HR_APPROVED)
+        timesheets = Timesheet.objects.filter(
+            current_status=Timesheet.Current_Status.HR_APPROVED)
         report_data = []
 
         for timesheet in timesheets:
@@ -453,15 +456,16 @@ class TimesheetReportView(APIView):
 
                 total_hours = timesheet.total_hours
                 total_leave_hours = total_hours - Decimal(total_project_hours)
-                total_available_hours = 160  
-                loe = ((Decimal(total_project_hours) / Decimal(total_hours)) * 100).quantize(Decimal('0.01'))
+                total_available_hours = 160
+                loe = ((Decimal(total_project_hours) / Decimal(total_hours))
+                       * 100).quantize(Decimal('0.01'))
 
                 report_entry = {
                     'employee_id': employeeid,
                     'staff_name': fullname,
                     'district': district,
                     'project': projects,
-                    'total_hours': total_hours, 
+                    'total_hours': total_hours,
                     'total_work_hours': total_project_hours,
                     'total_leave_hours': total_leave_hours,
                     'total_available_hours': total_hours,

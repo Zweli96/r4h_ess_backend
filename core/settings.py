@@ -133,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Blantyre'
 
 USE_I18N = True
 
@@ -189,20 +189,15 @@ else:
         "http://127.0.0.1:3000/",
     ]
 
-# Configure Redis as the broker for Celery
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-
 # Celery settings
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-# CELERY_BEAT_SCHEDULE = {
-#     "send-emails": {
-#         "task": "timesheets.tasks.send_email",
-#         "schedule": timedelta(minutes=2),
-#     }
-# }
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+# Use database scheduler
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_TIMEZONE = 'Africa/Blantyre'
+
 
 # Email Configuration
 EMAIL_BACKEND = env("EMAIL_BACKEND")

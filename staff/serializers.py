@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Staff
+from timesheets.models import Timesheet
+from datetime import datetime
 
 
 class StaffSerializer(serializers.ModelSerializer):
@@ -21,11 +23,12 @@ class StaffSerializer(serializers.ModelSerializer):
 
 class CustomUserSerializer(serializers.ModelSerializer):
     staff = StaffSerializer(source='staff_profile', read_only=True)
+    timesheet_submitted = serializers.SerializerMethodField()
 
     class Meta:
         model = User
         fields = ['id', 'first_name', 'last_name',
-                  'username', 'email', 'staff']
+                  'username', 'email', 'staff', 'timesheet_submitted']
 
     def get_staff(self, obj):
         try:
@@ -33,3 +36,16 @@ class CustomUserSerializer(serializers.ModelSerializer):
             return StaffSerializer(staff).data
         except Staff.DoesNotExist:
             return None
+
+    def get_timesheet_submitted(self, obj):
+        # Get current month and year in "Month YYYY" format (e.g., "April 2025")
+        current_date = datetime.now()
+        current_period = current_date.strftime("%B %Y")
+
+        # Check for timesheet in current period, not rejected, for the user
+        return Timesheet.objects.filter(
+            created_by=obj,
+            period=current_period,
+            current_status__in=[
+                'Submitted', 'Line Manager Approved', 'HR Approved']  # Not REJECTED
+        ).exists()

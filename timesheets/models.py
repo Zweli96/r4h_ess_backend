@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta, date
+from .tasks import send_timesheet_approval_notification
 
 
 # Create your models here.
@@ -89,9 +90,6 @@ class Timesheet(models.Model):
         HR_APPROVED = "HR Approved", "HR Approved"
         REJECTED = "Rejected", "Rejected"
 
-    # period = models.ForeignKey(
-    #     Period, on_delete=models.SET_NULL, null=True)
-
     period = models.CharField(max_length=255, null=True)
     current_status = models.CharField(choices=Current_Status.choices, max_length=50,
                                       null=False, blank=False)
@@ -123,6 +121,27 @@ class Timesheet(models.Model):
 
     def __str__(self):
         return f'{self.period}_{self.created_by.first_name}_{self.created_by.last_name}'
+
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super().save(*args, **kwargs)
+        if is_new:  # Only send request for approval for the creation of new time
+            timesheet_data = {
+                'id': self.id,  # Fix: Quote the key
+                # Convert DateTime to string
+                'submission_date': self.created_at.strftime('%Y-%m-%d'),
+                'period': self.period,
+                # Convert Decimal to string
+                'hours_worked': str(self.total_hours),
+                'leave_days': self.leave_days,
+            }
+
+            send_timesheet_approval_notification.delay(
+                line_manager_email=self.line_manager.email,
+                line_manager_name=f"{self.line_manager.first_name} {self.line_manager.last_name}",
+                staff_name=f"{self.created_by.first_name} {self.created_by.last_name}",
+                timesheet_data=timesheet_data,
+            )
 
  # activity model
 
