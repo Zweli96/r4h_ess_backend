@@ -377,10 +377,10 @@ class EmployeePeriodListApiView(APIView):
 
 
 class ActivityListApiView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         activities = Activity.objects.all()
         serializer = ActivitySerializer(activities, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data,  status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = ActivitySerializer(data=request.data)
