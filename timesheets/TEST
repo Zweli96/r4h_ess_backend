@@ -1,0 +1,587 @@
+    <case case_id="bc93bafb-46a9-437f-a30b-8adda9720c03" case_type="Sample" external_id="5292ea6f-7529-4875-bbd3-649ee44943ea" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>April1</case_name>
+        <date_opened>2025-04-29</date_opened>
+        <last_modified>2025-04-29</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <dispatcher_from_hub>Test User</dispatcher_from_hub>
+        <facility_name>Facility_2</facility_name>
+        <facility_display_name>Facility 2</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>44</age>
+        <tracking_number>April1</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_4658a858-4027-489c-8d68-aad3145456d6</type_id>
+        <patient_id>april</patient_id>
+        <time_picked_from_hub>11:57:51.204</time_picked_from_hub>
+        <hub_name>Test_DHO</hub_name>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <result>unknown<age_years>44</age_years>
+        <visit_id>46dfe3eb-1ff8-452c-9846-4b5214ce0399</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2025-04-29</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>male</sex>
+        <result_checklist_display_text>April1, ID: april (male, 44)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>April1, ID: april (male, 44)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_picked_from_hub>2025-04-29</date_picked_from_hub>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"bc93bafb-46a9-437f-a30b-8adda9720c03","sample_barcode":"April1","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2025-04-29</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>April1</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location/>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>44</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>5292ea6f-7529-4875-bbd3-649ee44943ea</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>4658a858-4027-489c-8d68-aad3145456d6</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Facility_2</facility_name_other>
+        <picked_from_hub>yes</picked_from_hub>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">5292ea6f-7529-4875-bbd3-649ee44943ea</parent>
+        </index>
+        <attachment/>
+    </case>
+    <case case_id="e3be12b1-46a5-48fe-9d95-8334412858ee" case_type="Sample" external_id="5292ea6f-7529-4875-bbd3-649ee44943ea" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>April2</case_name>
+        <date_opened>2025-04-29</date_opened>
+        <last_modified>2025-04-29</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <dispatcher_from_hub>Test User</dispatcher_from_hub>
+        <facility_name>Facility_2</facility_name>
+        <facility_display_name>Facility 2</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>33</age>
+        <tracking_number>April2</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_fdcfbaf0-b6de-44b4-bb02-0359ab501f15</type_id>
+        <patient_id>April2</patient_id>
+        <time_picked_from_hub>11:57:51.204</time_picked_from_hub>
+        <hub_name>Test_DHO</hub_name>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <result>unknown</result>
+        <age_years>33</age_years>
+        <visit_id>46dfe3eb-1ff8-452c-9846-4b5214ce0399</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2025-04-29</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>female_non_pregnant</sex>
+        <result_checklist_display_text>April2, ID: April2 (female_non_pregnant, 33)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>April2, ID: April2 (female_non_pregnant, 33)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_picked_from_hub>2025-04-29</date_picked_from_hub>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"e3be12b1-46a5-48fe-9d95-8334412858ee","sample_barcode":"April2","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2025-04-29</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>April2</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location/>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>33</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>5292ea6f-7529-4875-bbd3-649ee44943ea</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>fdcfbaf0-b6de-44b4-bb02-0359ab501f15</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Facility_2</facility_name_other>
+        <picked_from_hub>yes</picked_from_hub>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">5292ea6f-7529-4875-bbd3-649ee44943ea</parent>
+        </index>
+        <attachment/>
+    </case>
+
+    instance('casedb')/casedb/case[@external_id = instance('commcaresession')/session/data/case_id][@status = "open"][sample_status = 'registered'][date_sample_picked_up_by_courier < today()]
+
+</result>
+
+
+
+
+
+
+
+date filtered
+
+    <case case_id="8a172930-f035-478f-97a2-908462cc616a" case_type="Sample" external_id="d5e19216-b935-4172-83a5-50af40601179" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>newline</case_name>
+        <date_opened>2024-11-12</date_opened>
+        <last_modified>2024-11-12</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <facility_name>Test_DHO</facility_name>
+        <facility_display_name>Test DHO</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>12</age>
+        <tracking_number>newline</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_ada7079a-6598-4b7b-9f6d-c4c2abfd69ad</type_id>
+        <patient_id>1</patient_id>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <age_years>12</age_years>
+        <result>unknown<visit_id>6f3527f3-c22e-4470-aa22-0ffb6d6af1ed</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2024-11-12</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>male</sex>
+        <result_checklist_display_text>newline
+, ID: 1 (male, 12)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>newline
+, ID: 1 (male, 12)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"8a172930-f035-478f-97a2-908462cc616a","sample_barcode":"newline
+","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2024-11-12</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>newline</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location>-14.0059365 33.7872419 1079.19 5.09</data_capture_location>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>12</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>d5e19216-b935-4172-83a5-50af40601179</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>ada7079a-6598-4b7b-9f6d-c4c2abfd69ad</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Test_DHO</facility_name_other>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">d5e19216-b935-4172-83a5-50af40601179</parent>
+        </index>
+        <attachment/>
+    </case>
+    <case case_id="e4c07208-8b05-4f01-a0a8-581ef8b5d214" case_type="Sample" external_id="d5e19216-b935-4172-83a5-50af40601179" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>dewline</case_name>
+        <date_opened>2024-11-12</date_opened>
+        <last_modified>2024-11-12</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <facility_name>Test_DHO</facility_name>
+        <facility_display_name>Test DHO</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>30</age>
+        <tracking_number>dewline</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_26a175e2-7bc4-46d7-b80c-5f9c35191556</type_id>
+        <patient_id>test</patient_id>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <age_years>30</age_years>
+        <result>unknown</result>
+        <visit_id>795bcc93-fda8-46ba-84f3-18836aafce27</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2024-11-04</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>male</sex>
+        <result_checklist_display_text>dewline, ID: test (male, 30)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>dewline, ID: test (male, 30)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"e4c07208-8b05-4f01-a0a8-581ef8b5d214","sample_barcode":"dewline","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2024-11-12</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>dewline</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location/>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>30</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>d5e19216-b935-4172-83a5-50af40601179</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>26a175e2-7bc4-46d7-b80c-5f9c35191556</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Test_DHO</facility_name_other>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">d5e19216-b935-4172-83a5-50af40601179</parent>
+        </index>
+        <attachment/>
+    </case>
+    <case case_id="88364bfa-d79a-4121-8c2d-50df093465a5" case_type="Sample" external_id="73c5da80-0259-4378-96bd-8b69703021ab" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>TestOrientation</case_name>
+        <date_opened>2025-01-28</date_opened>
+        <last_modified>2025-01-28</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <facility_name>Test Facility 1</facility_name>
+        <facility_display_name>Test Facility 1</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>55</age>
+        <tracking_number>TestOrientation</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_72a6733f-f2a0-4586-9f4d-47960a8fac4f</type_id>
+        <patient_id>321</patient_id>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <age_years>55</age_years>
+        <result>unknown</result>
+        <visit_id>4fd307a1-f009-48ec-8a74-9b76695e80f3</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2025-01-28</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>male</sex>
+        <result_checklist_display_text>TestOrientation, ID: 321 (male, 55)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>TestOrientation, ID: 321 (male, 55)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"88364bfa-d79a-4121-8c2d-50df093465a5","sample_barcode":"TestOrientation","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2025-01-28</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>TestOrientation</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location/>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>55</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>73c5da80-0259-4378-96bd-8b69703021ab</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>72a6733f-f2a0-4586-9f4d-47960a8fac4f</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Test Facility 1</facility_name_other>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">73c5da80-0259-4378-96bd-8b69703021ab</parent>
+        </index>
+        <attachment/>
+    </case>
+    <case case_id="bc93bafb-46a9-437f-a30b-8adda9720c03" case_type="Sample" external_id="5292ea6f-7529-4875-bbd3-649ee44943ea" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>April1</case_name>
+        <date_opened>2025-04-29</date_opened>
+        <last_modified>2025-04-29</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <dispatcher_from_hub>Test User</dispatcher_from_hub>
+        <facility_name>Facility_2</facility_name>
+        <facility_display_name>Facility 2</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>44</age>
+        <tracking_number>April1</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_4658a858-4027-489c-8d68-aad3145456d6</type_id>
+        <patient_id>april</patient_id>
+        <time_picked_from_hub>11:57:51.204</time_picked_from_hub>
+        <hub_name>Test_DHO</hub_name>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <result>unknown</result>
+        <age_years>44</age_years>
+        <visit_id>46dfe3eb-1ff8-452c-9846-4b5214ce0399</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2025-04-29</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>male</sex>
+        <result_checklist_display_text>April1, ID: april (male, 44)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>April1, ID: april (male, 44)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_picked_from_hub>2025-04-29</date_picked_from_hub>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"bc93bafb-46a9-437f-a30b-8adda9720c03","sample_barcode":"April1","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2025-04-29</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>April1</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location/>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>44</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>5292ea6f-7529-4875-bbd3-649ee44943ea</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>4658a858-4027-489c-8d68-aad3145456d6</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Facility_2</facility_name_other>
+        <picked_from_hub>yes</picked_from_hub>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">5292ea6f-7529-4875-bbd3-649ee44943ea</parent>
+        </index>
+        <attachment/>
+    </case>
+    <case case_id="e3be12b1-46a5-48fe-9d95-8334412858ee" case_type="Sample" external_id="5292ea6f-7529-4875-bbd3-649ee44943ea" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>April2</case_name>
+        <date_opened>2025-04-29</date_opened>
+        <last_modified>2025-04-29</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <dispatcher_from_hub>Test User</dispatcher_from_hub>
+        <facility_name>Facility_2</facility_name>
+        <facility_display_name>Facility 2</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>33</age>
+        <tracking_number>April2</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_fdcfbaf0-b6de-44b4-bb02-0359ab501f15</type_id>
+        <patient_id>April2</patient_id>
+        <time_picked_from_hub>11:57:51.204</time_picked_from_hub>
+        <hub_name>Test_DHO</hub_name>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <result>unknown</result>
+        <age_years>33</age_years>
+        <visit_id>46dfe3eb-1ff8-452c-9846-4b5214ce0399</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2025-04-29</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>female_non_pregnant</sex>
+        <result_checklist_display_text>April2, ID: April2 (female_non_pregnant, 33)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>April2, ID: April2 (female_non_pregnant, 33)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_picked_from_hub>2025-04-29</date_picked_from_hub>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"e3be12b1-46a5-48fe-9d95-8334412858ee","sample_barcode":"April2","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2025-04-29</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>April2</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location/>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>33</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>5292ea6f-7529-4875-bbd3-649ee44943ea</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>fdcfbaf0-b6de-44b4-bb02-0359ab501f15</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Facility_2</facility_name_other>
+        <picked_from_hub>yes</picked_from_hub>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">5292ea6f-7529-4875-bbd3-649ee44943ea</parent>
+        </index>
+        <attachment/>
+    </case>
+    <case case_id="f038c498-13e5-4df0-ad5f-f86ddfc483b8" case_type="Sample" external_id="d5e19216-b935-4172-83a5-50af40601179" owner_id="f6e47268ae667e482d226309683c577a" status="open">
+        <case_name>spewline</case_name>
+        <date_opened>2024-11-12</date_opened>
+        <last_modified>2024-11-12</last_modified>
+        <test_requested>VL_DBS</test_requested>
+        <date_registered>unknown</date_registered>
+        <facility_name>Test_DHO</facility_name>
+        <facility_display_name>Test DHO</facility_display_name>
+        <lab_name_other>unknown</lab_name_other>
+        <age>55</age>
+        <tracking_number>spewline</tracking_number>
+        <test>VL</test>
+        <appear_on_results_checklist>unknown</appear_on_results_checklist>
+        <type_id>VL:_cabf5f4b-a3bf-42db-8160-68cd889b62a0</type_id>
+        <patient_id>test</patient_id>
+        <date_sample_delivered_to_hub_checklist>unknown</date_sample_delivered_to_hub_checklist>
+        <age_years>55</age_years>
+        <result>unknown</result>
+        <visit_id>19589d19-9953-4188-b4e6-081eb6fe5f65</visit_id>
+        <sample_count_error/>
+        <sample_delivered_to_hub_checklist>unknown</sample_delivered_to_hub_checklist>
+        <date_sample_collected_from_patient>2024-11-12</date_sample_collected_from_patient>
+        <rejected/>
+        <registered_by>unknown</registered_by>
+        <sample_delivered_to_hub_by_checklist>unknown</sample_delivered_to_hub_by_checklist>
+        <result_entered_by>unknown</result_entered_by>
+        <result_delivered_by_checklist>unknown</result_delivered_by_checklist>
+        <sex>male</sex>
+        <result_checklist_display_text>spewline, ID: test (male, 55)</result_checklist_display_text>
+        <sample_status>registered</sample_status>
+        <sample_checklist_display_text>spewline, ID: test (male, 55)</sample_checklist_display_text>
+        <delivered_to_molecular_lab_by>unknown</delivered_to_molecular_lab_by>
+        <date_result_delivered_to_facility>unknown</date_result_delivered_to_facility>
+        <json_details>{"case_id":"f038c498-13e5-4df0-ad5f-f86ddfc483b8","sample_barcode":"spewline","test":"VL_DBS"}</json_details>
+        <date_sample_picked_up_by_courier>2024-11-12</date_sample_picked_up_by_courier>
+        <lab_name>unknown</lab_name>
+        <date_result_checked>unknown</date_result_checked>
+        <sample_barcode>spewline</sample_barcode>
+        <date_result_entered>unknown</date_result_entered>
+        <result_fetched_by>unknown</result_fetched_by>
+        <reason_for_rejection>unknown</reason_for_rejection>
+        <data_capture_location>-14.0059941 33.7871739 1079.19 7.3</data_capture_location>
+        <date_sample_delivered_to_molecular_lab>unknown</date_sample_delivered_to_molecular_lab>
+        <sample_registered>yes</sample_registered>
+        <result_delivered>unknown</result_delivered>
+        <date_sample_checked>unknown</date_sample_checked>
+        <age_display>55</age_display>
+        <test_requested_other/>
+        <sample_delivered_to_molecular_lab_checklist>unknown</sample_delivered_to_molecular_lab_checklist>
+        <result_delivery_comments>unknown</result_delivery_comments>
+        <result_checked>unknown</result_checked>
+        <result_entered>unknown</result_entered>
+        <district>Test</district>
+        <date_result_fetched_from_molecular_lab>unknown</date_result_fetched_from_molecular_lab>
+        <date_sample_delivered_to_molecular_lab_checklist>unknown</date_sample_delivered_to_molecular_lab_checklist>
+        <userid>f6e47268ae667e482d226309683c577a</userid>
+        <external_id>d5e19216-b935-4172-83a5-50af40601179</external_id>
+        <date_result_delivered_to_facility_checklist>unknown</date_result_delivered_to_facility_checklist>
+        <result_comment>unknown</result_comment>
+        <checking_id>cabf5f4b-a3bf-42db-8160-68cd889b62a0</checking_id>
+        <sample_checked>unknown</sample_checked>
+        <facility_name_other>Test_DHO</facility_name_other>
+        <delivered_to_molecular_lab_by_checklist>unknown</delivered_to_molecular_lab_by_checklist>
+        <result_delivered_by>unknown</result_delivered_by>
+        <index>
+            <parent case_type="Facility" relationship="child">d5e19216-b935-4172-83a5-50af40601179</parent>
+        </index>
+        <attachment/>
+    </case>
+</result>

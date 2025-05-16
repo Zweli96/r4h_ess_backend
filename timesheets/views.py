@@ -220,7 +220,7 @@ class TimesheetListApiView(APIView):
 
 class TimesheetDetailApiView(APIView):
     # add permission to check if user is authenticated
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def get_object(self, timesheet_id, user_id):
         '''
@@ -469,6 +469,7 @@ class TimesheetReportView(APIView):
                     projects[project]['loe'] = project_loe
 
                 report_entry = {
+                    "id":timesheet.pk,
                     'employee_id': employeeid,
                     'staff_name': fullname,
                     'district': district,

@@ -86,6 +86,7 @@ class DistrictSerializer(serializers.ModelSerializer):
 
 
 class TimesheetReportSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     employee_id = serializers.CharField()
     staff_name = serializers.CharField()
     department = serializers.CharField()
