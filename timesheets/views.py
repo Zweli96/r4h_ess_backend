@@ -61,6 +61,12 @@ class ApproveDetailApiView(APIView):
                     data['first_approval_date'] = datetime.datetime.now()
                     data['first_approver'] = request.user.id
                     data['current_status'] = Timesheet.Current_Status.LINE_APPROVED
+
+                    # data['actions'] = {
+                    #     "action": "line_manager_approval",
+                    #     "responsible": approver.id,
+                    #     "date": timezone.now().strftime("%Y-%m-%d")
+                    # }
                 else:
                     return Response(f'In order to complete a line manager approval user has to be line manager of the staff, for this timesheet the line manager is {timesheet_instance.created_by.email}', status=status.HTTP_400_BAD_REQUEST)
             elif timesheet_instance.current_status == Timesheet.Current_Status.LINE_APPROVED:
@@ -438,7 +444,7 @@ class TimesheetReportView(APIView):
         for timesheet in timesheets:
             if timesheet.filled_timesheet is not None and isinstance(timesheet.filled_timesheet, dict):
                 userid = timesheet.created_by_id
-                staffdetails = Staff.objects.get(id=userid)
+                staffdetails = Staff.objects.get(user=userid)
                 employeeid = staffdetails.employee_number
                 district = staffdetails.district
                 period = timesheet.period
@@ -469,7 +475,7 @@ class TimesheetReportView(APIView):
                     projects[project]['loe'] = project_loe
 
                 report_entry = {
-                    "id":timesheet.pk,
+                    "id": timesheet.pk,
                     'employee_id': employeeid,
                     'staff_name': fullname,
                     'district': district,

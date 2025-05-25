@@ -79,6 +79,7 @@ class Period(models.Model):
 #     status = models.CharField(
 #         max_length=200, choices=STATUS, null=True, default="ACTIVE")
 
+
     def __str__(self):
         return self.name
 
@@ -92,8 +93,6 @@ class Timesheet(models.Model):
 
     period = models.CharField(max_length=255, null=True)
     current_status = models.CharField(choices=Current_Status.choices, max_length=50,
-                                      null=False, blank=False)
-    current_status = models.CharField(choices=Current_Status, max_length=50,
                                       null=False, blank=False)
     line_manager = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, related_name="line_manager_timesheets")
@@ -111,6 +110,7 @@ class Timesheet(models.Model):
     leave_days = models.IntegerField()
     working_days = models.IntegerField()
     filled_timesheet = models.JSONField(null=True)
+    actions = models.JSONField(default=list, null=True, blank=True)
     edited_at = models.DateTimeField(auto_now=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     created_by = models.ForeignKey(
@@ -126,6 +126,13 @@ class Timesheet(models.Model):
         is_new = self._state.adding
         super().save(*args, **kwargs)
         if is_new:  # Only send request for approval for the creation of new time
+            self.actions = [{
+                "action": "submitted",
+                "responsible": f"{self.created_by.first_name} {self.created_by.last_name}",
+                "date": self.created_at.strftime("%Y-%m-%d")
+            }]
+            self.save(update_fields=["actions"])  # Save actions
+            # Send notification to first approver
             timesheet_data = {
                 'id': self.id,  # Fix: Quote the key
                 # Convert DateTime to string

@@ -4,3 +4,4 @@ db.sqlite3
 /env
 *.env
 .vscode
+Dockerfile.r4h_ess_backend
