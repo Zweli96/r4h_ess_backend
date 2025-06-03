@@ -13,6 +13,8 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from decimal import Decimal
 from rest_framework import generics
+from .tasks import send_hr_approval_notification, send_submitter_notification
+from staff.models import Staff
 
 
 class ApproveDetailApiView(APIView):
@@ -54,6 +56,9 @@ class ApproveDetailApiView(APIView):
 
         # initialize the data object
         data = {}
+        # Get the current actions list (or initialize as empty list if None)
+        current_actions = timesheet_instance.actions or []
+
         if action == 'approve':
             # if the current status is SUBMITTED, then set the first_approver, date and status
             if timesheet_instance.current_status == Timesheet.Current_Status.SUBMITTED:
@@ -61,19 +66,26 @@ class ApproveDetailApiView(APIView):
                     data['first_approval_date'] = datetime.datetime.now()
                     data['first_approver'] = request.user.id
                     data['current_status'] = Timesheet.Current_Status.LINE_APPROVED
-
-                    # data['actions'] = {
-                    #     "action": "line_manager_approval",
-                    #     "responsible": approver.id,
-                    #     "date": timezone.now().strftime("%Y-%m-%d")
-                    # }
+                    current_actions.append({
+                        "action": "line_manager_approval",
+                        "responsible": f"{request.user.first_name} {request.user.last_name}",
+                        "date": datetime.datetime.now().strftime("%Y-%m-%d")
+                    })
+                    data['actions'] = current_actions
                 else:
                     return Response(f'In order to complete a line manager approval user has to be line manager of the staff, for this timesheet the line manager is {timesheet_instance.created_by.email}', status=status.HTTP_400_BAD_REQUEST)
             elif timesheet_instance.current_status == Timesheet.Current_Status.LINE_APPROVED:
                 if staff.hr_approval:
                     data['second_approver'] = request.user.id
                     data['second_approval_date'] = datetime.datetime.now()
+                    # Append HR approval to actions
                     data['current_status'] = Timesheet.Current_Status.HR_APPROVED
+                    current_actions.append({
+                        "action": "hr_approval",
+                        "responsible": f"{request.user.first_name} {request.user.last_name}",
+                        "date": datetime.datetime.now().strftime("%Y-%m-%d")
+                    })
+                    data['actions'] = current_actions
                 else:
                     return Response(f'In order to complete an HR approval user has to be in HR Dept current user departnment is {staff.department.name}', status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -97,6 +109,15 @@ class ApproveDetailApiView(APIView):
                 data["rejected_by"] = request.user.id
                 # Optional: track when it was rejected
                 data["rejected_date"] = datetime.datetime.now()
+                # Append rejection to actions
+                action_type = ("line_manager_rejection" if timesheet_instance.current_status == Timesheet.Current_Status.SUBMITTED
+                               else "hr_rejection")
+                current_actions.append({
+                    "action": action_type,
+                    "responsible": f"{request.user.first_name} {request.user.last_name}",
+                    "date": datetime.datetime.now().strftime("%Y-%m-%d")
+                })
+                data['actions'] = current_actions
             else:
                 return Response(
                     f"Cannot reject a timesheet with status {timesheet_instance.current_status}. It must be SUBMITTED or LINE_APPROVED",
@@ -112,6 +133,47 @@ class ApproveDetailApiView(APIView):
             instance=timesheet_instance, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            # Send notifications based on action and status
+            timesheet_data = {
+                "id": timesheet_instance.id,
+                "submission_date": timesheet_instance.created_at.strftime("%Y-%m-%d"),
+                "period": timesheet_instance.period,
+                "hours_worked": str(timesheet_instance.total_hours),
+                "leave_days": timesheet_instance.leave_days,
+                "comment": timesheet_instance.comment or ""
+            }
+            if action == 'approve' and data['current_status'] == Timesheet.Current_Status.LINE_APPROVED:
+                # Notify HR for second approval
+
+                hr_users = User.objects.filter(staff_profile__hr_approval=True)
+                for hr_user in hr_users:
+                    try:
+                        send_hr_approval_notification.delay(
+                            hr_email=hr_user.email,
+                            hr_name=f"{hr_user.first_name} {hr_user.last_name}",
+                            staff_name=f"{timesheet_instance.created_by.first_name} {timesheet_instance.created_by.last_name}",
+                            timesheet_data=timesheet_data
+                        )
+                    except Exception as e:
+                        print(
+                            f"Failed to send HR notification to {hr_user.email}: {e}")
+            elif action == 'approve' and data['current_status'] == Timesheet.Current_Status.HR_APPROVED:
+                # Notify submitter of final approval
+                send_submitter_notification.delay(
+                    submitter_email=timesheet_instance.created_by.email,
+                    submitter_name=f"{timesheet_instance.created_by.first_name} {timesheet_instance.created_by.last_name}",
+                    timesheet_data=timesheet_data,
+                    status="approved"
+                )
+            elif action == 'reject':
+                # Notify submitter of rejection
+                send_submitter_notification.delay(
+                    submitter_email=timesheet_instance.created_by.email,
+                    submitter_name=f"{timesheet_instance.created_by.first_name} {timesheet_instance.created_by.last_name}",
+                    timesheet_data=timesheet_data,
+                    status="rejected",
+                    rejected_by=f"{request.user.first_name} {request.user.last_name}"
+                )
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -157,37 +219,6 @@ class TimesheetListApiView(APIView):
 
         serializer = TimesheetSerializer(timesheets, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # 2. Create
-#     def post(self, request, *args, **kwargs):
-#         '''
-#         Create the Timesheet with given timesheet data
-#         '''
-#         staff = Staff.objects.get(user_id=request.user.id)
-
-#         data = {
-#             'period': request.data.get('period'),
-#             'projects': request.data.get('completed'),
-#             'total_hours': request.data.get('total_hours'),
-#             'leave_days': request.data.get('leave_days'),
-#             'working_days': request.data.get('working_days'),
-#             'filled_timesheet': request.data.get('filled_timesheet'),
-#             'first_approver': staff.line_manager.id,
-#             'created_at': datetime.datetime.now(),
-#             'current_status': Timesheet.Current_Status.SUBMITTED,
-#             'created_by': request.user.id,
-#             'status': STATUS[0][0],
-
-#         }
-#         serializer = TimesheetSerializer(data=data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# #adding timesheet to the database
 
     def post(self, request, *args, **kwargs):
         user = request.data.get('created_by')
@@ -271,12 +302,6 @@ class TimesheetDetailApiView(APIView):
                 data[field] = request.data[field]
         data['user'] = request.user.id
         data['edited_at'] = datetime.datetime.now()
-
-        # data = {
-        #     'task': request.data.get('task'),
-        #     'completed': request.data.get('completed'),
-        #     'user': request.user.id
-        # }
 
         serializer = TimesheetSerializer(
             instance=timesheet_instance, data=data, partial=True)

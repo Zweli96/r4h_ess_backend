@@ -94,7 +94,7 @@ def send_hr_approval_notification(hr_email, hr_name, staff_name, timesheet_data)
     # Notification for HR second approval
     try:
         print(
-            f"Processing approval notification email for {staff_name} - {timesheet_data['period']}...")
+            f"Processing HR approval notification email for {staff_name} - {timesheet_data['period']}...")
         subject = f"Timesheet Submission by {staff_name} awaiting HR review"
         # Adjust URL as needed
         review_url = f"{settings.SYSTEM_URL}/approvals"
@@ -104,7 +104,6 @@ def send_hr_approval_notification(hr_email, hr_name, staff_name, timesheet_data)
             'hr_name': hr_name,
             'staff_name': staff_name,
             'submission_date': timesheet_data['submission_date'],
-            'line_manager_approval_date': timesheet_data['line_manager_approval_date'],
             'period': timesheet_data['period'],
             'hours_worked': timesheet_data['hours_worked'],
             'leave_days': timesheet_data['leave_days'],
@@ -118,7 +117,7 @@ def send_hr_approval_notification(hr_email, hr_name, staff_name, timesheet_data)
         # Send the email
         send_mail(
             subject=subject,
-            message="A new timesheet has been submitted.",  # Plain text fallback
+            message="A new timesheet is awaiting HR review.",  # Plain text fallback
             from_email=f"R4H TIMESHEETS <{settings.DEFAULT_FROM_EMAIL}>",
             recipient_list=[hr_email],
             html_message=html_message,
@@ -130,6 +129,49 @@ def send_hr_approval_notification(hr_email, hr_name, staff_name, timesheet_data)
 
 
 @shared_task
-def send_submitter_notification(submitter_email, submitter_name, timesheet_data, status):
-    # Notification for submitter (approved/rejected)
+def send_submitter_notification(submitter_email, submitter_name, timesheet_data, status, rejected_by=None):
+    # Notification for submitter about timesheet approval or rejection
+    try:
+        print(
+            f"Processing submitter notification email for {submitter_name} - {timesheet_data['period']} (Status: {status})..."
+        )
+        # Set subject based on status
+        subject = (
+            f"Timesheet Approved for {submitter_name}" if status == "approved"
+            else f"Timesheet Rejected for {submitter_name}"
+        )
+        # Adjust URL as needed
+        view_url = f"{settings.SYSTEM_URL}/timesheets/history"
+
+        # Context for the email template
+        context = {
+            'submitter_name': submitter_name,
+            'submission_date': timesheet_data['submission_date'],
+            'period': timesheet_data['period'],
+            'hours_worked': timesheet_data['hours_worked'],
+            'leave_days': timesheet_data['leave_days'],
+            'status': status.capitalize(),
+            'comment': timesheet_data.get('comment', ''),
+            'view_url': view_url,
+            'rejected_by': rejected_by,
+        }
+
+        # Render the HTML template
+        html_message = render_to_string(
+            'timesheet_submitter_notification_email.html', context
+        )
+        # Send the email
+        send_mail(
+            subject=subject,
+            message=(
+                f"Your timesheet for {timesheet_data['period']} has been {status}."
+                f"{' Reason: ' + timesheet_data.get('comment', '') if status == 'rejected' else ''}"
+            ),  # Plain text fallback
+            from_email=f"R4H TIMESHEETS <{settings.DEFAULT_FROM_EMAIL}>",
+            recipient_list=[submitter_email],
+            html_message=html_message,
+            fail_silently=False,
+        )
+    except Exception as e:
+        print(f"Error sending submitter notification: {e}")
     pass

@@ -1,4 +1,3 @@
-<!-- templates/emails/timesheet_notification.html -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -31,25 +30,26 @@
   <body>
     <div class="container">
       <div class="header">
-        <h2>New Timesheet Submission</h2>
+        <h2>Timesheet {{ status }} Notification</h2>
       </div>
       <div class="content">
-        <p>Dear {{ hr_name }},</p>
-        <p>
-          A new timesheet has been submitted by {{ staff_name }} has been
-          approved by the line manager and is awaiting your Approval
-        </p>
+        <p>Dear {{ submitter_name }},</p>
+        <p>Your timesheet for the period {{ period }} has been {{ status }}.</p>
         <h3>Timesheet Details:</h3>
         <ul>
-          <li><strong>Name:</strong> {{ staff_name }}</li>
+          <li><strong>Name:</strong> {{ submitter_name }}</li>
           <li><strong>Submission Date:</strong> {{ submission_date }}</li>
           <li><strong>Period:</strong> {{ period }}</li>
           <li><strong>Hours Worked:</strong> {{ hours_worked }}</li>
           <li><strong>Leave Days:</strong> {{ leave_days }}</li>
+          {% if status == "Rejected" and comment %}
+          <li><strong>Rejected By:</strong> {{ rejected_by }}</li>
+          <li><strong>Rejection Reason:</strong> {{ comment }}</li>
+          {% endif %}
         </ul>
-        <p>Please review the timesheet at your earliest convenience.</p>
+        <p>Please review your timesheet details for more information.</p>
         <a
-          href="{{ review_url }}"
+          href="{{ view_url }}"
           style="
             display: inline-block;
             padding: 10px 20px;
@@ -57,7 +57,7 @@
             color: #fff;
             text-decoration: none;
           "
-          >Review Timesheet</a
+          >View Timesheet</a
         >
       </div>
       <div class="footer">
