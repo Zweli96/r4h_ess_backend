@@ -34,4 +34,6 @@ urlpatterns = [
     path('activities/<int:activity_id>/', ActivityDetailApiView.as_view()),
     path('timesheetReport/', TimesheetReportView.as_view()),
     path('districts/', DistrictView.as_view(), name='districts'),
+     path('training/', include('timesheets.Training.urls')),
+
 ]

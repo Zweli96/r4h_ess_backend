@@ -43,7 +43,7 @@ RUN /env/bin/python manage.py collectstatic --noinput
 RUN chmod -R 777 /app/staticfiles
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8001
 
 # Start Gunicorn server
-CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "core.wsgi:application"]
+CMD ["gunicorn", "--bind", ":8001", "--workers", "3", "core.wsgi:application"]

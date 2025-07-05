@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import timedelta, date
 from .tasks import send_timesheet_approval_notification
+# timesheet/models.py
+
 
 
 # Create your models here.
@@ -174,3 +176,4 @@ class Activity(models.Model):
     class Meta:
         verbose_name = 'Activity'
         verbose_name_plural = 'Activities'
+
